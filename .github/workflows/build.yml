@@ -1,0 +1,38 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Unzip project
+        run: unzip -o BibaiProductCounter-Android-project.zip
+
+      - name: Build APK
+        working-directory: bibai-android-app
+        run: |
+          gradle --version
+          gradle assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: bibai-product-counter-apk
+          path: bibai-android-app/app/build/outputs/apk/debug/*.apk
