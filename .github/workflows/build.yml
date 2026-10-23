@@ -28,7 +28,7 @@ jobs:
           ls "$ANDROID_HOME/platforms"
           ls "$ANDROID_HOME/build-tools"
 
-      - name:       - name: Inspect ZIP
+      - name: Inspect ZIP
         run: |
           python3 - <<'PY'
           import zipfile
