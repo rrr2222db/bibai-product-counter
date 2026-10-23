@@ -1,4 +1,3 @@
-```yaml
 name: Android APK Build
 
 on:
@@ -54,4 +53,3 @@ jobs:
         with:
           name: bibai-product-counter-apk
           path: bibai-android-app/app/build/outputs/apk/debug/*.apk
-```
