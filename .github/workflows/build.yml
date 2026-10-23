@@ -1,3 +1,4 @@
+```yaml
 name: Android APK Build
 
 on:
@@ -36,12 +37,12 @@ jobs:
           with zipfile.ZipFile("BibaiProductCounter-Android-project.zip") as z:
               for info in z.infolist():
                   name = info.filename
-                  try:
-                      name.encode("utf-8")
-                      print("OK:", repr(name))
-                  except UnicodeEncodeError:
-                      print("INVALID:", repr(name))
+                  print(repr(name))
+                  print("Path length:", len(name))
           PY
+
+      - name: Unpack project
+        run: unzip -o BibaiProductCounter-Android-project.zip
 
       - name: Build APK
         working-directory: bibai-android-app
@@ -53,3 +54,4 @@ jobs:
         with:
           name: bibai-product-counter-apk
           path: bibai-android-app/app/build/outputs/apk/debug/*.apk
+```
