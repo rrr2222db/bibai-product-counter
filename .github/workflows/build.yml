@@ -41,7 +41,30 @@ jobs:
           PY
 
       - name: Unpack project
-        run: unzip -o BibaiProductCounter-Android-project.zip
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          import os
+
+          zip_name = "BibaiProductCounter-Android-project.zip"
+
+          with zipfile.ZipFile(zip_name) as z:
+              for info in z.infolist():
+                  name = info.filename
+
+                  # 異常に長いファイル名の説明用TXTだけを除外
+                  if (
+                      name.startswith("bibai-android-app/")
+                      and name.lower().endswith(".txt")
+                      and len(name) > 100
+                  ):
+                      print("除外:", repr(name))
+                      continue
+
+                  z.extract(info, ".")
+
+          print("ZIP展開完了")
+          PY
 
       - name: Build APK
         working-directory: bibai-android-app
