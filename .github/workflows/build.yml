@@ -28,19 +28,19 @@ jobs:
           ls "$ANDROID_HOME/platforms"
           ls "$ANDROID_HOME/build-tools"
 
-      - name: Unpack project
+      - name:       - name: Inspect ZIP
         run: |
           python3 - <<'PY'
           import zipfile
-          from pathlib import Path
 
-          zip_path = Path("BibaiProductCounter-Android-project.zip")
-
-          with zipfile.ZipFile(zip_path, "r") as z:
+          with zipfile.ZipFile("BibaiProductCounter-Android-project.zip") as z:
               for info in z.infolist():
-                  print(repr(info.filename))
-
-              z.extractall(".")
+                  name = info.filename
+                  try:
+                      name.encode("utf-8")
+                      print("OK:", repr(name))
+                  except UnicodeEncodeError:
+                      print("INVALID:", repr(name))
           PY
 
       - name: Build APK
